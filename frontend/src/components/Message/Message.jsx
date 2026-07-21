@@ -1,8 +1,13 @@
 import "./Message.css";
 
-function Message() {
+function Message({ sender, text }) {
+
     return (
-        <div>
+        <div className={`message ${sender}`}>
+
+            <div className="bubble">
+                {text}
+            </div>
 
         </div>
     );

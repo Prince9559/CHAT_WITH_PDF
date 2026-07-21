@@ -1,56 +1,102 @@
 import "./Chat.css";
 import axios from "axios";
 import { useState } from "react";
+import Message from "../Message/Message";
 
 const API = "https://chat-with-pdf-t5h4.onrender.com/api";
 
 function Chat() {
 
     const [question, setQuestion] = useState("");
-    const [answer, setAnswer] = useState("");
-
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    
     async function askQuestion() {
 
-        if (!question.trim()) {
-            alert("Enter a question");
-            return;
-        }
+    if (!question.trim()) {
+        alert("Enter a question");
+        return;
+    }
 
-        try {
+    const userMessage = {
+        sender: "user",
+        text: question
+    };
 
-            const { data } = await axios.post(`${API}/ask`, {
-                question
-            });
+    setMessages(prev => [...prev, userMessage]);
 
-            setAnswer(data.answer);
+    setLoading(true);
 
-        } catch (err) {
-            console.log(err);
-            alert("Something went wrong");
-        }
+    try {
+
+        const { data } = await axios.post(`${API}/ask`, {
+            question
+        });
+
+        setMessages(prev => [
+            ...prev,
+            {
+                sender: "ai",
+                text: data.answer
+            }
+        ]);
+
+        setQuestion("");
+
+    } catch (err) {
+
+        setMessages(prev => [
+            ...prev,
+            {
+                sender: "ai",
+                text: "Something went wrong."
+            }
+        ]);
+
+    } finally {
+
+        setLoading(false);
 
     }
+
+}
 
     return (
         <div className="chat-container">
 
-            <input
-                type="text"
-                placeholder="Ask your question..."
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-            />
+            <div className="chat-box">
 
-            <button onClick={askQuestion}>
-                Ask
-            </button>
+    {messages.map((msg, index) => (
+        <Message
+            key={index}
+            sender={msg.sender}
+            text={msg.text}
+        />
+    ))}
 
-            {answer && (
-                <div className="answer">
-                    <h3>Answer</h3>
-                    <p>{answer}</p>
-                </div>
-            )}
+    {loading && (
+        <Message
+            sender="ai"
+            text="Typing..."
+        />
+    )}
+
+</div>
+
+            <div className="chat-input">
+
+                <input
+                    type="text"
+                    placeholder="Ask your question..."
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                />
+
+                <button onClick={askQuestion}>
+                    Send
+                </button>
+
+            </div>
 
         </div>
     );
