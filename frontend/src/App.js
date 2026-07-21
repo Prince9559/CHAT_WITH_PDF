@@ -1,8 +1,9 @@
 import "./App.css";
+import { useState } from "react";
+
 import Navbar from "./components/Navbar/Navbar";
 import UploadPDF from "./components/UploadPDF/UploadPDF";
 import Chat from "./components/Chat/Chat";
-import { useState } from "react";
 
 function App() {
 
@@ -10,18 +11,11 @@ function App() {
 
   return (
     <div className="App">
-
       <Navbar />
 
-      <UploadPDF
-        pdfUploaded={pdfUploaded}
-        setPdfUploaded={setPdfUploaded}
-      />
+      <UploadPDF setPdfUploaded={setPdfUploaded} />
 
-      <Chat
-        pdfUploaded={pdfUploaded}
-      />
-
+      <Chat pdfUploaded={pdfUploaded} />
     </div>
   );
 }

@@ -1,64 +1,42 @@
 import "./UploadPDF.css";
-import { useState } from "react";
+import axios from "axios";
 
-function UploadPDF({ pdfUploaded, setPdfUploaded }) {
+const API = "https://chat-with-pdf-t5h4.onrender.com/api";
 
-    const [file, setFile] = useState(null);
+function UploadPDF({ setPdfUploaded }) {
 
-    const handleFile = (e) => {
+    async function handleFile(e) {
 
-        setFile(e.target.files[0]);
+        const file = e.target.files[0];
 
-    };
+        if (!file) return;
 
-    const handleUpload = () => {
+        try {
 
-        if (!file) {
+            const formData = new FormData();
+            formData.append("pdf", file);
 
-            alert("Select PDF First");
+            const { data } = await axios.post(`${API}/upload`, formData);
 
-            return;
+            alert(data.message);
 
+            setPdfUploaded(true);
+
+        } catch (err) {
+            console.error(err);
+            alert("Upload Failed");
         }
-
-        // API next step
-
-        setPdfUploaded(true);
-
-    };
+    }
 
     return (
-
         <div className="upload-container">
-
             <input
                 type="file"
-                accept=".pdf"
+                accept="application/pdf"
                 onChange={handleFile}
             />
-
-            <button
-                onClick={handleUpload}
-            >
-                Upload PDF
-            </button>
-
-            {
-
-                pdfUploaded &&
-
-                <p>
-
-                    ✅ PDF Uploaded
-
-                </p>
-
-            }
-
         </div>
-
     );
-
 }
 
 export default UploadPDF;

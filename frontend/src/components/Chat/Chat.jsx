@@ -1,62 +1,59 @@
 import "./Chat.css";
+import axios from "axios";
 import { useState } from "react";
 
-function Chat({ pdfUploaded }) {
+const API = "https://chat-with-pdf-t5h4.onrender.com/api";
+
+function Chat() {
 
     const [question, setQuestion] = useState("");
+    const [answer, setAnswer] = useState("");
 
-    const askQuestion = () => {
+    async function askQuestion() {
 
-        if (!pdfUploaded) {
-
-            alert("Upload PDF First");
-
+        if (!question.trim()) {
+            alert("Enter a question");
             return;
-
         }
 
-        if (question === "") {
+        try {
 
-            alert("Enter Question");
+            const { data } = await axios.post(`${API}/ask`, {
+                question
+            });
 
-            return;
+            setAnswer(data.answer);
 
+        } catch (err) {
+            console.log(err);
+            alert("Something went wrong");
         }
 
-        console.log(question);
-
-    };
+    }
 
     return (
-
         <div className="chat-container">
 
             <input
-
                 type="text"
-
+                placeholder="Ask your question..."
                 value={question}
-
-                placeholder="Ask Question..."
-
                 onChange={(e) => setQuestion(e.target.value)}
-
             />
 
-            <button
-
-                onClick={askQuestion}
-
-            >
-
+            <button onClick={askQuestion}>
                 Ask
-
             </button>
 
+            {answer && (
+                <div className="answer">
+                    <h3>Answer</h3>
+                    <p>{answer}</p>
+                </div>
+            )}
+
         </div>
-
     );
-
 }
 
 export default Chat;
