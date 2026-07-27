@@ -22,21 +22,21 @@ function UploadPDF({ setPdfUploaded }) {
             const formData = new FormData();
             formData.append("pdf", file);
 
-            const { data } = await axios.post(`${API}/upload`, formData);
+            await axios.post(`${API}/upload`, formData);
 
             toast.success("📄 PDF Uploaded Successfully");
 
-setPdfUploaded(true);
+            setPdfUploaded(true);
 
         } catch (err) {
 
-    console.error(err);
+            console.error(err);
 
-    toast.error("❌ Upload Failed");
+            toast.error("❌ Upload Failed");
 
-    setPdfUploaded(false);
+            setPdfUploaded(false);
 
-}
+        }
 
     }
 
@@ -58,9 +58,9 @@ setPdfUploaded(true);
             </label>
 
             {fileName && (
-             <p className="file-name">
-              📄 {fileName}
-              </p>
+                <p className="file-name">
+                    📄 {fileName}
+                </p>
             )}
 
         </div>
