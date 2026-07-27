@@ -8,7 +8,8 @@ const chunkText = require("../utils/chunkText");
 async function uploadPDF(req, res) {
     try {
 
-        if (!req.file) {
+    if (!req.file) 
+        {
             return res.status(400).json({
                 success: false,
                 message: "Please upload a PDF."
