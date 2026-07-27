@@ -1,15 +1,21 @@
 import "./UploadPDF.css";
 import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const API = "https://chat-with-pdf-t5h4.onrender.com/api";
 
 function UploadPDF({ setPdfUploaded }) {
+
+    const [fileName, setFileName] = useState("");
 
     async function handleFile(e) {
 
         const file = e.target.files[0];
 
         if (!file) return;
+
+        setFileName(file.name);
 
         try {
 
@@ -18,25 +24,49 @@ function UploadPDF({ setPdfUploaded }) {
 
             const { data } = await axios.post(`${API}/upload`, formData);
 
-            alert(data.message);
+            toast.success("📄 PDF Uploaded Successfully");
 
-            setPdfUploaded(true);
+setPdfUploaded(true);
 
         } catch (err) {
-            console.error(err);
-            alert("Upload Failed");
-        }
+
+    console.error(err);
+
+    toast.error("❌ Upload Failed");
+
+    setPdfUploaded(false);
+
+}
+
     }
 
     return (
+
         <div className="upload-container">
-            <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleFile}
-            />
+
+            <label className="upload-box">
+
+                📄 Choose PDF
+
+                <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFile}
+                    hidden
+                />
+
+            </label>
+
+            {fileName && (
+             <p className="file-name">
+              📄 {fileName}
+              </p>
+            )}
+
         </div>
+
     );
+
 }
 
 export default UploadPDF;
