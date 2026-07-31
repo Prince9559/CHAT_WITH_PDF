@@ -23,14 +23,13 @@ function Chat({ pdfUploaded }) {
 
     async function askQuestion() {
 
-        // PDF upload check
         if (!pdfUploaded) {
             toast.warning("📄 Please upload a PDF first");
             return;
         }
 
-        // Empty question check
-        if (!question.trim()) {
+        if (!question.trim()) 
+        {
             toast.warning("⚠️ Please enter a question");
             return;
         }
@@ -41,7 +40,6 @@ function Chat({ pdfUploaded }) {
         };
 
         setMessages(prev => [...prev, userMessage]);
-
         setLoading(true);
 
         try {
@@ -60,14 +58,12 @@ function Chat({ pdfUploaded }) {
 
             setQuestion("");
 
-        } catch (err) {
-
+        } catch (err) 
+        {
             console.error(err);
-
             toast.error("❌ Something went wrong");
 
-            setMessages(prev => [
-                ...prev,
+            setMessages(prev => [...prev,
                 {
                     sender: "ai",
                     text: "Something went wrong."
@@ -84,47 +80,29 @@ function Chat({ pdfUploaded }) {
 
     return (
         <div className="chat-container">
-
             <div className="chat-box">
 
                 {messages.map((msg, index) => (
-                    <Message
-                        key={index}
-                        sender={msg.sender}
-                        text={msg.text}
-                    />
+                    <Message key={index} sender={msg.sender}text={msg.text}/>
                 ))}
 
                 {loading && <Loader />}
-
                 <div ref={bottomRef}></div>
 
             </div>
 
             <div className="chat-input">
-
-                <input
-                    type="text"
-                    placeholder="Ask anything from your PDF..."
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                <input type="text" placeholder="Ask anything from your PDF..." value={question}onChange={(e) => setQuestion(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                        if (e.key === "Enter") 
+                        {
                             askQuestion();
                         }
                     }}
-                    disabled={!pdfUploaded}
-                />
+                    disabled={!pdfUploaded}/>
 
-                <button
-                    onClick={askQuestion}
-                    disabled={!pdfUploaded || loading}
-                >
-                    {loading
-                        ? "Sending..."
-                        : pdfUploaded
-                        ? "Send"
-                        : "Upload PDF First"}
+                <button onClick={askQuestion}disabled={!pdfUploaded || loading}>
+                    {loading ? "Sending..." : pdfUploaded ? "Send" : "Upload PDF First"}
                 </button>
 
             </div>

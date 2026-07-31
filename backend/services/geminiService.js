@@ -5,10 +5,8 @@ const ai = new GoogleGenAI({
 });
 
 async function generateAnswer(context, question) {
-
     const response = await ai.models.generateContent({
-            model: "gemini-3.5-flash",
-
+        model: "gemini-3.5-flash",
         contents: `Answer the question using the following context.Context:${context} Question:${question}`,
     });
 

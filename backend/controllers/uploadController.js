@@ -15,24 +15,18 @@ async function uploadPDF(req, res) {
                 message: "Please upload a PDF."
             });
         }
-
-        // Read PDF
         const dataBuffer = fs.readFileSync(req.file.path);
-
-        // Extract Text
         const pdfData = await pdfParse(dataBuffer);
-
-        // Split into Chunks
         const chunks = chunkText(pdfData.text);
 
-        const points = [];
+        const points=[];
 
-        for (let i = 0; i < chunks.length; i++) {
-
+        for (let i=0;i<chunks.length; i++) 
+            {
             const embedding = await createEmbedding(chunks[i]);
 
             points.push({
-                id: Date.now() + i,   // abhi simple unique id
+                id: Date.now() + i,   
                 vector: embedding,
                 payload: {
                     text: chunks[i]
@@ -41,18 +35,15 @@ async function uploadPDF(req, res) {
 
         }
 
-        // Save to Qdrant
         await insertPoints(points);
-
         return res.status(200).json({
             success: true,
             message: "PDF Uploaded Successfully"
         });
 
-    } catch (error) {
-
+    } catch (error) 
+    {
         console.log(error);
-
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"

@@ -13,20 +13,11 @@ function App() {
 
     return (
         <div className={darkMode ? "App dark" : "App"}>
-
             <Navbar />
-
             <UploadPDF setPdfUploaded={setPdfUploaded} />
-
             <Chat pdfUploaded={pdfUploaded} />
-
-            <ThemeToggle
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-            />
-
+            <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode}/>
             <ToastProvider />
-
         </div>
     );
 }

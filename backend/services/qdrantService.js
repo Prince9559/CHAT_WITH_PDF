@@ -6,9 +6,8 @@ const qdrant = new QdrantClient({
 });
 
 const COLLECTION_NAME = "pdf-docs";
-
-// Create Collection
-async function createCollection() {
+async function createCollection() 
+{
     try {
         await qdrant.createCollection(COLLECTION_NAME, {
             vectors: {
@@ -24,16 +23,13 @@ async function createCollection() {
     }
 }
 
-// Insert Embeddings
 async function insertPoints(points) {
     await qdrant.upsert(COLLECTION_NAME, {
         points,
     });
 }
 
-// Search Similar Chunks
 async function searchPoints(vector) {
-
     const result = await qdrant.search(COLLECTION_NAME, {
         vector,
         limit: 3,

@@ -5,13 +5,11 @@ import { toast } from "react-toastify";
 
 const API = "https://chat-with-pdf-t5h4.onrender.com/api";
 
-function UploadPDF({ setPdfUploaded }) {
-
+function UploadPDF({ setPdfUploaded }) 
+{
     const [fileName, setFileName] = useState("");
-
     async function handleFile(e) {
-
-        const file = e.target.files[0];
+        const file =e.target.files[0];
 
         if (!file) return;
 
@@ -21,21 +19,15 @@ function UploadPDF({ setPdfUploaded }) {
 
             const formData = new FormData();
             formData.append("pdf", file);
-
             await axios.post(`${API}/upload`, formData);
-
             toast.success("📄 PDF Uploaded Successfully");
-
             setPdfUploaded(true);
 
-        } catch (err) {
-
+        } catch (err) 
+        {
             console.error(err);
-
             toast.error("❌ Upload Failed");
-
             setPdfUploaded(false);
-
         }
 
     }
@@ -43,24 +35,11 @@ function UploadPDF({ setPdfUploaded }) {
     return (
 
         <div className="upload-container">
-
-            <label className="upload-box">
-
-                📄 Choose PDF
-
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFile}
-                    hidden
-                />
-
+            <label className="upload-box">📄 Choose PDF
+                <input type="file"accept="application/pdf"onChange={handleFile} hidden/>
             </label>
 
-            {fileName && (
-                <p className="file-name">
-                    📄 {fileName}
-                </p>
+            {fileName && ( <p className="file-name">📄 {fileName}</p>
             )}
 
         </div>

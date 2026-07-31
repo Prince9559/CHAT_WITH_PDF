@@ -5,10 +5,7 @@ function ThemeToggle({ darkMode, setDarkMode }) {
 
     return (
 
-        <button
-            className="theme-toggle"
-            onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <FaMoon /> : <FaSun />}
+        <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>{darkMode ? <FaMoon /> : <FaSun />}
         </button>
 
     );
