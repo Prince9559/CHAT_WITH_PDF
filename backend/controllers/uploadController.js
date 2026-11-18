@@ -8,6 +8,7 @@ const chunkText = require("../utils/chunkText");
 async function uploadPDF(req, res) {
     try {
 
+        console.log("STEP 1: PDF Parsing Successful");
     if (!req.file) 
         {
             return res.status(400).json({
@@ -23,7 +24,10 @@ async function uploadPDF(req, res) {
 
         for (let i=0;i<chunks.length; i++) 
             {
+            
+            console.log("STEP 2: Generating Embedding", i);    
             const embedding = await createEmbedding(chunks[i]);
+            console.log("STEP 3: Embedding Generated", i);
 
             points.push({
                 id: Date.now() + i,   
@@ -34,8 +38,10 @@ async function uploadPDF(req, res) {
             });
 
         }
-
+        console.log("STEP 4: Inserting Data Into Qdrant");
         await insertPoints(points);
+        console.log("STEP 5: Qdrant Insert Successful");
+
         return res.status(200).json({
             success: true,
             message: "PDF Uploaded Successfully"
