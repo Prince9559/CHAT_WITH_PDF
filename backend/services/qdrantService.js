@@ -24,9 +24,24 @@ async function createCollection()
 }
 
 async function insertPoints(points) {
-    await qdrant.upsert(COLLECTION_NAME, {
-        points,
-    });
+    try {
+        console.log("QDRANT: Insertion started");
+
+        await qdrant.upsert(COLLECTION_NAME, {
+            points,
+        });
+
+        console.log("QDRANT: Insertion successful");
+
+    } catch (error) {
+        console.error("QDRANT ERROR:", {
+            message: error.message,
+            cause: error.cause?.message,
+            code: error.cause?.code,
+        });
+
+        throw error;
+    }
 }
 
 async function searchPoints(vector) {
