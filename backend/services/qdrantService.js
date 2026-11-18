@@ -26,19 +26,22 @@ async function createCollection()
 async function insertPoints(points) {
     try {
         console.log("QDRANT: Insertion started");
+        console.log("QDRANT URL:", process.env.QDRANT_URL);
+        console.log("TOTAL POINTS:", points.length);
+        console.log("VECTOR SIZE:", points[0]?.vector?.length);
 
         await qdrant.upsert(COLLECTION_NAME, {
             points,
+            wait: true
         });
 
         console.log("QDRANT: Insertion successful");
 
     } catch (error) {
-        console.error("QDRANT ERROR:", {
-            message: error.message,
-            cause: error.cause?.message,
-            code: error.cause?.code,
-        });
+        console.error("QDRANT INSERT ERROR:", error);
+        console.error("QDRANT MESSAGE:", error.message);
+        console.error("QDRANT CAUSE:", error.cause);
+        console.error("QDRANT CODE:", error.cause?.code);
 
         throw error;
     }
