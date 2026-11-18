@@ -41,15 +41,14 @@ async function uploadPDF(req, res) {
             message: "PDF Uploaded Successfully"
         });
 
-    } catch (error) 
-    {
-        console.log(error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        });
+    }catch (error) {
+    console.error("PDF UPLOAD ERROR:", error.stack || error);
 
-    }
+    return res.status(500).json({
+        success: false,
+        message: error.message
+    });
+}
 }
 
 module.exports = {
